@@ -1,0 +1,21 @@
+{
+    "name": "codemix/oauth2yii",
+    "description": "An OAuth2 client / server extension for the Yii framework",
+    "keywords": ["oauth", "oauth2", "authentication"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Härtl",
+            "email": "haertl.mike@gmail.com",
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "OAuth2Yii": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.3.0"
+        "bshaffer/oauth2-server-php": "0.9",
+    }
+}
