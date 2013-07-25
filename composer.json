@@ -16,6 +16,6 @@
     },
     "require": {
         "php": ">=5.3.0",
-        "bshaffer/oauth2-server-php": "0.9"
+        "bshaffer/oauth2-server-php": "dev-master#b6aef0af329ea3d55479a965090c7e4c1f571564"
     }
 }
