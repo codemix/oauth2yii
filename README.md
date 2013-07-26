@@ -14,24 +14,24 @@ Before you can start using this extension you need to understand some basics abo
 OAuth2 works. You can read all the details in [RFC 6749](http://tools.ietf.org/html/rfc6749)
 but for a quick start we try to explain the main concepts here.
 
-The main idea is that a *resource owner* (a.k.a. end user) hosts some data at a *server*,
-and can grant permission to a *client* (a.k.a. a third party) to access this data or parts of it.
-Therefore the client can obtain an *access token* which represents this permission.
+The main idea is that a **resource owner** (a.k.a. end user) hosts some data at a **server**,
+and can grant permission to a **client** (a.k.a. a third party) to access this data or parts of it.
+Therefore the client can obtain an **access token** which represents this permission.
 
 So we have three roles involved:
 
- * **User** the end user that has a username and password at the server
- * **Server** a website where the end user has an account and stored data
- * **Client** a third party website that wants to access user data from the server.
-   Clients have to register with the server first and receive a client_id and client_secret.
+ * **User**: The end user that has a `username` and `password` at the server.
+ * **Server**: A website where the end user has an account and stored data.
+ * **Client**: A third party website that wants to access user data from the server.
+   Clients have to register with the server first and receive a `client_id` and `client_secret`.
 
-OAuth2 mainly defines four differnet flows for how to get an access token which are
+OAuth2 mainly defines four different flows for how to get an access token which are
 supported by this extension.
 
-## Authorization Code
+## 1. Authorization Code
 
-This is the famous "Login with your FB account" type: A client site wants to authenticate its
-users through another server and maybe also access the users data on that other website.
+This is the famous *"Login with your FB account"* type: A client site wants to authenticate its
+users through another server and access the users data on that other website.
 
 The basic flow here is:
 
@@ -46,32 +46,34 @@ The basic flow here is:
 The server here has to provide two main actions:
 
  * **authorize**: This is a page, where the user first has to login and is then asked for permission
-   to grant access to the client. This can either be a simple question like "Do you allow website
-   Foo to authenticate with us?" or involve the selection of **scopes** like "Which of the following
-   permissions do you want to grant to website Foo?"
- * **token**: This is the action where the client will send the authorization code to that
-   it got as URL parameter when the user returend from the authorization page
+   to grant access to the client. This can either be a simple question like *"Do you allow website
+   Foo to authenticate with us?"* or involve the selection of **scopes** like *"Which of the following
+   permissions do you want to grant to website Foo?"*. After this, the action will redirect the
+   user back to the client and append an *authorization code* to the client's redirect URL.
+ * **token**: This is the action where the client can exchange the *authorization code* against the
+   final *access token*.
 
 
-## Implicit Flow (or Client-Side flow)
+## 2. Implicit
 
 This is for pure Javascript applications that run in a browser. Note, that this grant type is considered
-to be insecure and should be avoided. There's no client involved here.
+to be insecure and should be avoided. There's no client involved in the communication to the server.
 
- 1. User is redirected to server site via javascript
+ 1. User is redirected to the server site via javascript
  1. User logs in there and is asked to grant permission to the application
  1. User is redirected back to client site with an *access token* as URL parameter
 
 The server here has to provide only one action:
 
  * **authorize**: This is the same page as in the step above, asking the user for permission.
-   The access token will be a hash in the URL where the user is redirected afterwards.
+   This time the URL that the user is redirect to afterwards will contain the *access token*
+   right away. But it's a URL hash parameter so that the client server can't read it.
 
 
-## Resource Owner Password
+## 3. Resource Owner Password
 
 If the client is a trusted entity, e.g. part of the providers enterprise then it can be
-trusted to ask the user for his credentials itself.
+trusted to ask the users for their credentials.
 
  1. Client POSTs the user's credentials directly to the authorization provider
  1. Client recieves an *access token* in response and optionally a refresh token
@@ -82,11 +84,11 @@ The server here again has to provide only one action:
    access token in return.
 
 
-## Client Credentials
+## 4. Client Credentials
 
-The last grant type is used if the client has to authenticate itself agains the server
+The last grant type is used if the client has to authenticate itself against the server
 to manage it's own data. Here no user is involved and the access token only allow the
-client to access his own data.
+client to access its own data.
 
  1. Client POSTs its own credentials directly to the authorization provider
  1. Client recieves an access token in response
