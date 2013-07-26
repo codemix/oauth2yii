@@ -240,3 +240,7 @@ On the authorize action, you can let your users select, which of the configured 
 they want to grant access to the client. This selection will be stored together with the
 access token for this client. Whenever that client tries to access the above action it
 has to send the right scope and will only be permitted if the user granted permission.
+
+### Storage
+
+TODO: Describe how to customize storage of clients, users and access tokens on the server.
