@@ -187,3 +187,54 @@ need to communicate to all clients that want to authenticate with you.
 ### Configure the `authorize` action
 
 TODO
+
+
+### Checking permissions
+
+The main purpose of all this is of course, to check if a client has permission to access
+a resource on your server. That's very similar to how you would do permission checks
+in Yii. Here's a simple example:
+
+```php
+public function actionView()
+{
+    if(!Yii::app()->oauth2->checkPermission()) {
+        throw new CHttpException(403, 'Forbidden');
+    }
+
+    // Your protected code ...
+}
+```
+
+The client requesting this action will only be allowed if he passes an *access token* along
+in the request header, that he obtained through one of the above grant types. The access
+token must also not be expired or the permission check will fail.
+
+If you need a more fine grained control over which clients are allowed which actions,
+you can use scopes. In this case the above permission check would look like:
+
+```php
+Yii::app()->oauth2->checkPermission('photos');
+```
+
+But in order to use scopes you must list all available scopes in your OAuth2 server component
+in `main.php`.
+
+```php
+'components' => array(
+    'oauth2' => array(
+        ...
+        'scopes' => array(
+            'wall',
+            'profile',
+            'friends',
+            'photos',
+        ),
+        'defaultScope' => 'profile',
+    ),
+```
+
+On the authorize action, you can let your users select, which of the configured scopes
+they want to grant access to the client. This selection will be stored together with the
+access token for this client. Whenever that client tries to access the above action it
+has to send the right scope and will only be permitted if the user granted permission.
