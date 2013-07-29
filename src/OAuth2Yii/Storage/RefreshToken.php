@@ -4,7 +4,7 @@ namespace OAuth2Yii\Storage;
 use \OAuth2\Storage\RefreshTokenInterface;
 
 /**
- * Storage for refresh tokens
+ * Serer storage for refresh tokens
  *
  * @author Michael Härtl <haertl.mike@gmail.com>
  */

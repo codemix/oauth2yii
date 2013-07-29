@@ -1,6 +1,11 @@
 <?php
-namespace OAuth2Yii\Interfacess;
+namespace OAuth2Yii\Interfaces;
 
+/**
+ * Client
+ *
+ * This is the interface that custom client data storages must implement.
+ */
 interface Client
 {
     /**

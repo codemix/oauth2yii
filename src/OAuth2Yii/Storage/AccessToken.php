@@ -4,7 +4,7 @@ namespace OAuth2Yii\Storage;
 use \OAuth2\Storage\AccessTokenInterface;
 
 /**
- * Storage for access tokens
+ * Server storage for access tokens
  *
  * @author Michael Härtl <haertl.mike@gmail.com>
  */

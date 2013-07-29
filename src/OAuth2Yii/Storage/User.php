@@ -4,7 +4,7 @@ namespace OAuth2Yii\Storage;
 use \OAuth2\Storage\UserCredentialsInterface;
 
 /**
- * Storage for user data
+ * Server storage for user data
  *
  * @author Michael Härtl <haertl.mike@gmail.com>
  */
