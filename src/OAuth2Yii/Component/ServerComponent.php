@@ -281,13 +281,6 @@ class ServerComponent extends CApplicationComponent
                 break;
             case self::CLASS_SCOPE:
                 $object = new Storage\Scope($this);
-                /*
-                $object = new \OAuth2\Storage\Memory(array(
-                    'default_scope'     => $this->defaultScope,
-                    'supported_scopes'  => $this->scopes,
-                ));
-                $object = new \OAuth2\Scope($memory);
-                */
                 break;
         }
 

@@ -243,4 +243,58 @@ has to send the right scope and will only be permitted if the user granted permi
 
 ### Storage
 
-TODO: Describe how to customize storage of clients, users and access tokens on the server.
+In order to store tokens, codes, clients and user, the extension will create some DB
+tables if they don't exist:
+
+ * `oauth_access_tokens`: Table for access tokens. Configurable in `$accessTokenTable`.
+ * `oauth_authorization_codes`: Table for authorization codes. Configurable in `$authorizationCodeTable`.
+ * `oauth_refresh_tokens`: Table for refresh tokens. Configurable in `$refreshTokenTable`.
+ * `oauth_clients`: Table for clients. Configurable in `$clientTable`.
+ * `oauth_users`: Table for users. Configurable in `$userTable`.
+
+As you see, we even create tables for clients and users to quickly get you started. But
+in real applications you probably always want to use your own schema for clients and users
+(e.g. you may want to store additional information for each user). To do so, you can
+configure your own storage for both of them via a configuration option.
+
+ * `$clientClass` a custom client storage that implements the OAuth2Yii\Interfaces\Client interface
+ * `$userClass` a custom user storage that implements the OAuth2Yii\Interfaces\User interface
+
+So to implement a custom storage you have to implement those interfaces. Here's a very simple example
+for a custom user storage class, based on ActiveRecord.
+
+```php
+<?php
+class OAuth2User implements OAuth2Yii\Interfaces\Client
+{
+    public function getUser($username)
+    {
+        return User::model()->findByAttributes(array('email'=>$username));
+    }
+
+    public function getUserId($user)
+    {
+        return $user->id;
+    }
+
+    public function getScope($user)
+    {
+        return $user->defaultScopes;
+    }
+
+    public function authenticate($user, $password)
+    {
+        return $user->password === md5($password);
+    }
+}
+```
+
+To use it, you'd configure it like:
+
+```php
+'components' => array(
+    'oauth2' => array(
+        ...
+        'userClass' => 'OAuth2User',
+    ),
+```
