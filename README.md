@@ -14,6 +14,8 @@ Before you can start using this extension you need to understand some basics abo
 OAuth2 works. You can read all the details in [RFC 6749](http://tools.ietf.org/html/rfc6749)
 but for a quick start we try to explain the main concepts here.
 
+## OAuth2
+
 The main idea is that a **resource owner** (a.k.a. end user) hosts some data at a **server**,
 and can grant permission to a **client** (a.k.a. a third party) to access this data or parts of it.
 Therefore the client can obtain an **access token** which represents this permission.
@@ -25,10 +27,10 @@ So we have three roles involved:
  * **Client**: A third party website that wants to access user data from the server.
    Clients have to register with the server first and receive a `client_id` and `client_secret`.
 
-OAuth2 mainly defines four different flows for how to get an access token which are
-supported by this extension.
+OAuth2 defines four different flows or *grant types* for how to get an access token. All four
+are supported by this extension. Let's look at each of them.
 
-## 1. Authorization Code
+### 1. Authorization Code
 
 This is the famous *"Login with your FB account"* type: A client site wants to authenticate its
 users through another server and access the users data on that other website.
@@ -54,7 +56,7 @@ The server here has to provide two main actions:
    final *access token*.
 
 
-## 2. Implicit
+### 2. Implicit
 
 This is for pure Javascript applications that run in a browser. Note, that this grant type is considered
 to be insecure and should be avoided. There's no client involved in the communication to the server.
@@ -70,7 +72,7 @@ The server here has to provide only one action:
    right away. But it's a URL hash parameter so that the client server can't read it.
 
 
-## 3. Resource Owner Password
+### 3. Resource Owner Password
 
 If the client is a trusted entity, e.g. part of the providers enterprise then it can be
 trusted to ask the users for their credentials.
@@ -84,7 +86,7 @@ The server here again has to provide only one action:
    access token in return.
 
 
-## 4. Client Credentials
+### 4. Client Credentials
 
 The last grant type is used if the client has to authenticate itself against the server
 to manage it's own data. Here no user is involved and the access token only allow the
@@ -140,7 +142,7 @@ Add the application component to your `main.php` and decide, which grant types y
 'components' => array(
     'oauth2' => array(
         'class'                     => 'OAuth2Yii\Component\ServerComponent',
-        // Enable one or more Autho
+        // Enable one or more grant types
         'enableAuthorization'       => true,
         'enableImplicit'            => true,
         'enableUserCredentials'     => true,
@@ -162,7 +164,7 @@ type are:
 
 This action is required by all grant types. It's available as an
 [action class](http://www.yiiframework.com/doc/guide/1.1/en/basics.controller#action) that you
-can configure in any controller you want. We recommend to create a `OauthController` and
+can configure in any controller you want. We recommend to create an `OAuthController` and
 import the action as follows.
 
 ```php
@@ -182,8 +184,9 @@ class OAuthController extends CController
 }
 ```
 
-If you use URLs in path format the URL should then be `oauth/token`. This is the URL you
-need to communicate to all clients that want to authenticate with you.
+If you use URLs in path format the URL should then be `oauth/token`. You can of course
+also define a URL rule and use any URL you want. But in any case you need to tell your
+clients under which URL to find your token action.
 
 
 ### Configure the `authorize` action
