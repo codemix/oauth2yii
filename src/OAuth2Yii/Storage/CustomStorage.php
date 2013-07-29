@@ -5,7 +5,7 @@ use \Yii as Yii;
 use \CException as CException;
 
 /**
- * Base class for storages with custom DB class
+ * Base class for server storages with custom DB class
  *
  * @author Michael Härtl <haertl.mike@gmail.com>
  */
@@ -16,7 +16,7 @@ abstract class CustomStorage extends Storage
     /**
      * @return string the interface name that the custom storage class must implement
      */
-    protected abstract function getInterfaces();
+    protected abstract function getInterface();
 
     /**
      * @param \OAuth2Yii\Component\Server the server component
@@ -26,7 +26,7 @@ abstract class CustomStorage extends Storage
     {
         parent::__construct($server);
         $this->_storage = new $className;
-        if(!is_a($this->_storage, $this->getInterfaces())) {
+        if(!is_a($this->_storage, $this->getInterface())) {
             throw new CException('Class must implement {$this->getInterfaces}');
         }
     }

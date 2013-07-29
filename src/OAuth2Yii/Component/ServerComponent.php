@@ -2,11 +2,12 @@
 namespace OAuth2Yii\Component;
 
 use \OAuth2Yii\Storage;
-use \Yii as Yii;
-use \CApplicationComponent as CApplicationComponent;
+
+use \Yii;
+use \CApplicationComponent;
 
 /**
- * Server
+ * ServerComponent
  *
  * This is the OAuth2 server application component.
  */
@@ -56,7 +57,7 @@ class ServerComponent extends CApplicationComponent
     /**
      * @var int lifetime of the access token in seconds. Default is 3600.
      */
-    public $accessLifetime = 3600;
+    public $accessTokenLifetime = 3600;
 
     /**
      * @var bool whether to enforce the use of a 'state'. See RFC 6749.
@@ -96,13 +97,13 @@ class ServerComponent extends CApplicationComponent
     public $userTable = 'oauth_users';
 
     /**
-     * @var string|null the name of the client class that implements OAuth2Yii\Interfacess\Client.
+     * @var string|null the name of the client class that implements OAuth2Yii\Interfaces\Client.
      * If null an client table will be auto created.
      */
     public $clientClass;
 
     /**
-     * @var string|null the name of the user class that implements OAuth2Yii\Interfacess\User.
+     * @var string|null the name of the user class that implements OAuth2Yii\Interfaces\User.
      * If null an user table will be auto created.
      */
     public $userClass;
@@ -148,7 +149,7 @@ class ServerComponent extends CApplicationComponent
         $this->initStorage();
 
         $this->_server = new \OAuth2\Server($this->getStorages(),array(
-            'access_lifetime'               => $this->accessLifetime,
+            'access_lifetime'               => $this->accessTokenLifetime,
             'enforce_state'                 => $this->enforceState,
             'require_exact_redirect_uri'    => $this->exactRedirectUri,
         ));
@@ -156,7 +157,7 @@ class ServerComponent extends CApplicationComponent
 
     /**
      * @param string|null $scope to check or null if no scope is used
-     * @return bool wether the client is authorized for this request
+     * @return bool whether the client is authorized for this request
      */
     public function checkAccess($scope=null)
     {

@@ -4,7 +4,7 @@ namespace OAuth2Yii\Storage;
 use \OAuth2\Storage\AuthorizationCodeInterface;
 
 /**
- * Storage for authorization codes
+ * Server storage for authorization codes
  *
  * @author Michael Härtl <haertl.mike@gmail.com>
  */

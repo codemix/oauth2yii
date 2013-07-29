@@ -5,7 +5,7 @@ use \OAuth2\Storage\ClientInterface;
 use \OAuth2\Storage\ClientCredentialsInterface;
 
 /**
- * Storage for client data
+ * Server storage for client data
  *
  * @author Michael Härtl <haertl.mike@gmail.com>
  */
@@ -14,9 +14,9 @@ class CustomClient extends CustomStorage implements ClientInterface, ClientCrede
     /**
      * @return string name of the DB table
      */
-    protected function getInterfaces()
+    protected function getInterface()
     {
-        return 'OAuth2Yii\Interfacess\Client';
+        return 'OAuth2Yii\Interfaces\Client';
     }
 
     /**

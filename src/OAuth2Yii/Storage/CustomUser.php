@@ -4,7 +4,7 @@ namespace OAuth2Yii\Storage;
 use \OAuth2\Storage\UserCredentialsInterface;
 
 /**
- * Storage for user data
+ * Server storage for user data
  *
  * @author Michael Härtl <haertl.mike@gmail.com>
  */
@@ -13,9 +13,9 @@ class CustomUser extends CustomStorage implements UserCredentialsInterface
     /**
      * @return string name of the DB table
      */
-    protected function getInterfaces()
+    protected function getInterface()
     {
-        return 'OAuth2Yii\Interfacess\User';
+        return 'OAuth2Yii\Interfaces\User';
     }
 
     /**
