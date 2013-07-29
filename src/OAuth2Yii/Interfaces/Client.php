@@ -34,7 +34,7 @@ interface Client
     /**
      * @param array|object $client the client data retrieved from getClient()
      * @param string $client_secret as given to the client
-     * @return bool wether the secret is valid for this client
+     * @return bool whether the secret is valid for this client
      */
     public function authenticate($client, $client_secret);
 }

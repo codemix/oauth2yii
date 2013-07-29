@@ -11,7 +11,7 @@ use \Yii;
 class ClientIdentity extends Identity
 {
     /**
-     * @return bool wether the client could be authenticated against the OAuth2 server
+     * @return bool whether the client could be authenticated against the OAuth2 server
      */
     public function authenticate()
     {

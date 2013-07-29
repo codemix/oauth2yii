@@ -32,7 +32,7 @@ interface User
     /**
      * @param array|object $user the user data retrieved from getUser()
      * @param string $password the user password
-     * @return bool wether the password is valid for this user
+     * @return bool whether the password is valid for this user
      */
     public function authenticate($user, $password);
 }

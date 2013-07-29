@@ -88,7 +88,7 @@ class RefreshToken extends DbStorage implements RefreshTokenInterface
      * Required by OAuth2\Storage\RefreshTokenInterfaces
      *
      * @param mixed $token to unset
-     * @return bool wether token was removed
+     * @return bool whether token was removed
      */
     public function unsetRefreshToken($token)
     {

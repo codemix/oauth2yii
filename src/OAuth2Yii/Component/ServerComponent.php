@@ -157,7 +157,7 @@ class ServerComponent extends CApplicationComponent
 
     /**
      * @param string|null $scope to check or null if no scope is used
-     * @return bool wether the client is authorized for this request
+     * @return bool whether the client is authorized for this request
      */
     public function checkAccess($scope=null)
     {

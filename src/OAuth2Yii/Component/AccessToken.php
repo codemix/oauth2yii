@@ -43,7 +43,7 @@ class AccessToken extends CComponent
     public $scope;
 
     /**
-     * @return bool wether this token is expired
+     * @return bool whether this token is expired
      */
     public function getIsExpired()
     {
