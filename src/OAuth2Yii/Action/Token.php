@@ -7,11 +7,11 @@ use \OAuth2Yii\Component\ServerComponent;
 use \OAuth2\GrantType;
 use \OAuth2\Request;
 
-use \Yii as Yii;
-use \CAction as CAction;
-use \CException as CException;
-use \CWebLogRoute as CWebLogRoute;
-use \CProfileLogRoute as CProfileLogRoute;
+use \Yii;
+use \CAction;
+use \CException;
+use \CWebLogRoute;
+use \CProfileLogRoute;
 
 class Token extends CAction
 {
@@ -41,6 +41,13 @@ class Token extends CAction
         if($oauth2->enableClientCredentials) {
             $clientStorage = $oauth2->getStorage(ServerComponent::STORAGE_CLIENT_CREDENTIALS);
             $server->addGrantType(new GrantType\ClientCredentials($clientStorage));
+        }
+
+        if($oauth2->enableUserCredentials) {
+            $userStorage = $oauth2->getStorage(ServerComponent::STORAGE_USER_CREDENTIALS);
+            $server->addGrantType(new GrantType\UserCredentials($userStorage));
+            $refreshStorage = $oauth2->getStorage(ServerComponent::STORAGE_REFRESH_TOKEN);
+            $server->addGrantType(new GrantType\RefreshToken($refreshStorage));
         }
 
         // Disable any potential output from Yii logroutes

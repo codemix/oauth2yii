@@ -5,7 +5,7 @@ use \Yii as Yii;
 use \CException as CException;
 
 /**
- * Base class for all storages
+ * Base class for all server storages
  *
  * @author Michael Härtl <haertl.mike@gmail.com>
  */

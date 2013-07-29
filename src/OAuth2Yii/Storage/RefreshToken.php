@@ -4,7 +4,7 @@ namespace OAuth2Yii\Storage;
 use \OAuth2\Storage\RefreshTokenInterface;
 
 /**
- * Storage for refresh tokens
+ * Serer storage for refresh tokens
  *
  * @author Michael Härtl <haertl.mike@gmail.com>
  */
@@ -88,7 +88,7 @@ class RefreshToken extends DbStorage implements RefreshTokenInterface
      * Required by OAuth2\Storage\RefreshTokenInterfaces
      *
      * @param mixed $token to unset
-     * @return bool wether token was removed
+     * @return bool whether token was removed
      */
     public function unsetRefreshToken($token)
     {

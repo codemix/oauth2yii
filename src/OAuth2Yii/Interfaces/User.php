@@ -1,6 +1,11 @@
 <?php
-namespace OAuth2Yii\Interfacess;
+namespace OAuth2Yii\Interfaces;
 
+/**
+ * Client
+ *
+ * This is the interface that custom user data storages must implement.
+ */
 interface User
 {
     /**
@@ -27,7 +32,7 @@ interface User
     /**
      * @param array|object $user the user data retrieved from getUser()
      * @param string $password the user password
-     * @return bool wether the password is valid for this user
+     * @return bool whether the password is valid for this user
      */
     public function authenticate($user, $password);
 }

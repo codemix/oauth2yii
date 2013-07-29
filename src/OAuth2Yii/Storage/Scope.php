@@ -4,7 +4,7 @@ namespace OAuth2Yii\Storage;
 use \OAuth2\Storage\ScopeInterface;
 
 /**
- * Storage for scopes
+ * Serer storage for scopes
  *
  * @author Michael Härtl <haertl.mike@gmail.com>
  */
