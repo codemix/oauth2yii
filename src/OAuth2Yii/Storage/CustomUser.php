@@ -28,7 +28,7 @@ class CustomUser extends CustomStorage implements UserCredentialsInterface
     public function checkUserCredentials($username, $password)
     {
         $storage    = $this->getStorage();
-        $user       = $storage->queryUser();
+        $user       = $storage->queryUser($username);
 
         if($user===null) {
             return false;
@@ -46,7 +46,7 @@ class CustomUser extends CustomStorage implements UserCredentialsInterface
     public function getUserDetails($username)
     {
         $storage    = $this->getStorage();
-        $user       = $storage->queryUser();
+        $user       = $storage->queryUser($username);
 
         if($user===null) {
             return false;

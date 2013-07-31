@@ -22,7 +22,7 @@ interface Client
      * @param array|object $client the client data retrieved from queryClient()
      * @return string the redirect URI for that client
      */
-    public function redirectUrl($client);
+    public function redirectUri($client);
 
     /**
      * @param array|object $client the client data retrieved from queryClient()

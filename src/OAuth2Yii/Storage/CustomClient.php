@@ -28,7 +28,7 @@ class CustomClient extends CustomStorage implements ClientInterface, ClientCrede
     public function getClientDetails($client_id)
     {
         $storage    = $this->getStorage();
-        $client     = $storage->queryClient();
+        $client     = $storage->queryClient($client_id);
 
         if($client===null) {
             return null;
@@ -71,7 +71,7 @@ class CustomClient extends CustomStorage implements ClientInterface, ClientCrede
     public function checkClientCredentials($client_id, $client_secret = null)
     {
         $storage    = $this->getStorage();
-        $client     = $storage->queryClient();
+        $client     = $storage->queryClient($client_id);
 
         if($client===null) {
             return false;
