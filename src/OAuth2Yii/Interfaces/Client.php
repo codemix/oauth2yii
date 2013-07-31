@@ -16,25 +16,25 @@ interface Client
      * So it should contain all the data that will be read out there.
      * If the client does not exist, null must be returned.
      */
-    public function getClient($client_id);
+    public function queryClient($client_id);
 
     /**
-     * @param array|object $client the client data retrieved from getClient()
+     * @param array|object $client the client data retrieved from queryClient()
      * @return string the redirect URI for that client
      */
-    public function getRedirectUrl($client);
+    public function redirectUrl($client);
 
     /**
-     * @param array|object $client the client data retrieved from getClient()
+     * @param array|object $client the client data retrieved from queryClient()
      * @return array list of allowed grant_types types for this client. See RFC 6749 for list of grant_types.
      * Can be an empty array to allow all configured grant types.
      */
-    public function getGrantTypes($client);
+    public function grantTypes($client);
 
     /**
-     * @param array|object $client the client data retrieved from getClient()
+     * @param array|object $client the client data retrieved from queryClient()
      * @param string $client_secret as given to the client
      * @return bool whether the secret is valid for this client
      */
-    public function authenticate($client, $client_secret);
+    public function verifySecret($client, $client_secret);
 }

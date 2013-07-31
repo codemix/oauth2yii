@@ -2,7 +2,7 @@
 namespace OAuth2Yii\Interfaces;
 
 /**
- * Client
+ * User
  *
  * This is the interface that custom user data storages must implement.
  */
@@ -15,24 +15,24 @@ interface User
      * So it should contain all the data that will be read out there.
      * If the user does not exist, null must be returned.
      */
-    public function getUser($username);
+    public function queryUser($username);
 
     /**
-     * @param array|object $user the user data retrieved from getUser()
+     * @param array|object $user the user data retrieved from queryUser()
      * @return string the user id that will be stored with authorization codes or access tokens
      */
-    public function getUserId($user);
+    public function userId($user);
 
     /**
-     * @param array|object $user the user data retrieved from getUser()
+     * @param array|object $user the user data retrieved from queryUser()
      * @return string|null space separated scopes for this user or null for all scopes
      */
-    public function getScope($user);
+    public function availableScopes($user);
 
     /**
-     * @param array|object $user the user data retrieved from getUser()
+     * @param array|object $user the user data retrieved from queryUser()
      * @param string $password the user password
      * @return bool whether the password is valid for this user
      */
-    public function authenticate($user, $password);
+    public function verifyPassword($user, $password);
 }
