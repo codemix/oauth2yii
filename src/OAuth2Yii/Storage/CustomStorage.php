@@ -27,7 +27,7 @@ abstract class CustomStorage extends Storage
         parent::__construct($server);
         $this->_storage = new $className;
         if(!is_a($this->_storage, $this->getInterface())) {
-            throw new CException('Class must implement {$this->getInterfaces}');
+            throw new CException("Class must implement {$this->getInterface()}");
         }
     }
 

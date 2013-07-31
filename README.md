@@ -274,22 +274,22 @@ for a custom user storage class, based on ActiveRecord.
 <?php
 class OAuth2User implements OAuth2Yii\Interfaces\Client
 {
-    public function getUser($username)
+    public function queryUser($username)
     {
         return User::model()->findByAttributes(array('email'=>$username));
     }
 
-    public function getUserId($user)
+    public function userId($user)
     {
         return $user->id;
     }
 
-    public function getScope($user)
+    public function availableScopes($user)
     {
         return $user->defaultScopes;
     }
 
-    public function authenticate($user, $password)
+    public function verifyPassword($user, $password)
     {
         return $user->password === md5($password);
     }
