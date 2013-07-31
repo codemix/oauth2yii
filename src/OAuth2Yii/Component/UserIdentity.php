@@ -33,6 +33,7 @@ class UserIdentity extends Identity
             return false;
         } else {
             YII_DEBUG && Yii::trace("Received access token '{$token->token}' for user", 'oauth2.accesstoken');
+            $this->errorCode = self::ERROR_NONE;
             $token->type = AccessToken::TYPE_USER;
             $provider->getStorage()->saveToken($this->username,$token);
             return true;
