@@ -28,17 +28,17 @@ class CustomClient extends CustomStorage implements ClientInterface, ClientCrede
     public function getClientDetails($client_id)
     {
         $storage    = $this->getStorage();
-        $client     = $storage->getClient();
+        $client     = $storage->queryClient();
 
         if($client===null) {
             return null;
         } else {
             $data = array(
-                'redirect_uri'  => $storage->getRedirectUri($client),
+                'redirect_uri'  => $storage->redirectUri($client),
                 'client_id'     => $client_id,
             );
 
-            if(($grantTypes = $storage->getGrantTypes($client))!==array) {
+            if(($grantTypes = $storage->grantTypes($client))!==array()) {
                 $data['grant_types'] = $grantTypes;
             }
 
@@ -71,12 +71,12 @@ class CustomClient extends CustomStorage implements ClientInterface, ClientCrede
     public function checkClientCredentials($client_id, $client_secret = null)
     {
         $storage    = $this->getStorage();
-        $client     = $storage->getClient();
+        $client     = $storage->queryClient();
 
         if($client===null) {
             return false;
         } else {
-            return $storage->authenticate($client, $client_secret);
+            return $storage->verifySecret($client, $client_secret);
         }
     }
 }

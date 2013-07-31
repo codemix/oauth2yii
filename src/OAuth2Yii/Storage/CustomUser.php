@@ -28,12 +28,12 @@ class CustomUser extends CustomStorage implements UserCredentialsInterface
     public function checkUserCredentials($username, $password)
     {
         $storage    = $this->getStorage();
-        $user       = $storage->getUser();
+        $user       = $storage->queryUser();
 
         if($user===null) {
             return false;
         } else {
-            return $storage->authenticate($user, $password);
+            return $storage->verifyPassword($user, $password);
         }
     }
 
@@ -46,16 +46,16 @@ class CustomUser extends CustomStorage implements UserCredentialsInterface
     public function getUserDetails($username)
     {
         $storage    = $this->getStorage();
-        $user       = $storage->getUser();
+        $user       = $storage->queryUser();
 
         if($user===null) {
             return false;
         } else {
             $data = array(
-                'user_id' => $storage->getUserId($user),
+                'user_id' => $storage->userId($user),
             );
 
-            if(($scope = $storage->getScope($user))!==null) {
+            if(($scope = $storage->availableScopes($user))!==null) {
                 $data['scope'] = $scope;
             }
 
