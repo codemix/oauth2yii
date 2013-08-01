@@ -23,6 +23,7 @@ class RefreshToken extends DbStorage implements RefreshTokenInterface
      */
     protected function createTable()
     {
+        YII_DEBUG && Yii::trace("Creating refresh token table '{$this->getTableName()}'", 'oauth.storage.refreshtoken');
         $this->getDb()->createCommand()->createTable($this->getTableName(), array(
             'refresh_token' => 'string NOT NULL PRIMARY KEY',
             'client_id'     => 'string NOT NULL',
@@ -36,18 +37,29 @@ class RefreshToken extends DbStorage implements RefreshTokenInterface
      * Required by OAuth2\Storage\RefreshTokenInterfaces
      *
      * @param mixed $token refresh token
-     * @return array with keys refresh_token, client_id, expires and scope
+     * @return array with keys refresh_token, client_id, user_id, expires and scope
      */
     public function getRefreshToken($token)
     {
         $sql = sprintf(
-            'SELECT refresh_token,client_id,expires,scope FROM %s WHERE refresh_token=:token',
+            'SELECT refresh_token,client_id,user_id,expires,scope FROM %s WHERE refresh_token=:token',
             $this->getTableName()
         );
         $result = $this->getDb()->createCommand($sql)->queryRow(true, array(':token'=>$token));
 
         if($result===false)
             return null;
+
+        YII_DEBUG && Yii::trace(
+            sprintf("Refresh token '%s' found. client_id: %s, user_id: %s, expires: %s, scope: %s",
+                $token,
+                $result['client_id'],
+                $result['user_id'],
+                $result['expires'],
+                $result['scope']
+            ),
+            'oauth2.storage.refreshtoken'
+        );
 
         $result['expires'] = strtotime($result['expires']);
     }
@@ -71,6 +83,17 @@ class RefreshToken extends DbStorage implements RefreshTokenInterface
             'scope'         => $scope,
         );
 
+        YII_DEBUG && Yii::trace(
+            sprintf("Saving refresh token '%s'. client_id: %s, user_id: %s, expires: %s, scope: %s",
+                $token,
+                $client_id,
+                $user_id,
+                $expires,
+                $scope
+            ),
+            'oauth2.storage.refreshtoken'
+        );
+
         $command = $this->getDb()->createCommand();
 
         if($this->getRefreshToken($token)===null) {
@@ -92,6 +115,7 @@ class RefreshToken extends DbStorage implements RefreshTokenInterface
      */
     public function unsetRefreshToken($token)
     {
+        YII_DEBUG && Yii::trace("Deleting refresh token '$token'", 'oauth.storage.refreshtoken');
         return $this->getDb()->createCommand()->delete($this->getTableName(), 'refresh_token=:token', array(
             ':token' => $token,
         ));
