@@ -1,6 +1,11 @@
 OAuth2
 ======
 
+This is a summary of the main features of OAuth2 as they are supported by this extension.
+You can read all the details in [RFC 6749](http://tools.ietf.org/html/rfc6749).
+
+## Overview
+
 The main idea is that a **resource owner** (a.k.a. end user) hosts some data at a **server**,
 and can grant permission to a **client** (a.k.a. a third party) to access this data or parts of it.
 Therefore the client can obtain an **access token** which represents this permission.
@@ -11,6 +16,8 @@ So we have three roles involved:
  * **Server**: A website where the end user has an account and stored data.
  * **Client**: A third party website that wants to access user data from the server.
    Clients have to register with the server first and receive a `client_id` and `client_secret`.
+
+## Grant Types
 
 OAuth2 defines four different flows or *grant types* for how to get an access token. All four
 are supported by this extension. Let's look at each of them.
