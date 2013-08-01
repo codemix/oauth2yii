@@ -211,7 +211,7 @@ class ServerComponent extends CApplicationComponent
     public function getUserId()
     {
         $request = \OAuth2\Request::createFromGlobals();
-        $tokenData = $this->_server->getAccessToken($request);
+        $tokenData = $this->_server->getAccessTokenData($request);
 
         return isset($tokenData['user_id']) ? $tokenData['user_id'] : null;
     }
