@@ -18,5 +18,6 @@ OAuth2 works. So we recommend to read the [OAuth2 introduction](docs/oauth2.md) 
 
  * [OAuth2 Introduction](docs/oauth2.md).
  * [Installation](docs/installation.md)
- * [Setup and use of an OAuth2 server](docs/server.md)
  * [Setup and use of an OAuth2 client](docs/client.md)
+ * [Setup and use of an OAuth2 server](docs/server.md)
+ * [DB Tables and custom storages](docs/storage.md)
