@@ -36,12 +36,12 @@ class AccessToken extends DbStorage implements AccessTokenInterface
      * Required by OAuth2\Storage\AccessTokenInterfaces
      *
      * @param mixed $token the access token
-     * @return null|array with keys client_id, expires and (optional) scope, null if not found
+     * @return null|array with keys client_id, user_id, expires and (optional) scope, null if not found
      */
     public function getAccessToken($token)
     {
         $sql = sprintf(
-            'SELECT client_id,expires,scope FROM %s WHERE access_token=:token',
+            'SELECT client_id,user_id,expires,scope FROM %s WHERE access_token=:token',
             $this->getTableName()
         );
         $result = $this->getDb()->createCommand($sql)->queryRow(true, array(':token'=>$token));

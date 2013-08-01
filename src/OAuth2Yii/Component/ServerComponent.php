@@ -194,13 +194,23 @@ class ServerComponent extends CApplicationComponent
     }
 
     /**
+     * @return mixed|null the user id if a valid access token was supplied in the request or null otherwhise
+     */
+    public function getUserId()
+    {
+        $request = \OAuth2\Request::createFromGlobals();
+        $tokenData = $this->_server->getAccessToken($request);
+
+        return isset($tokenData['user_id']) ? $tokenData['user_id'] : null;
+    }
+
+    /**
      * @return bool whether any grant type is enabled
      */
     public function getCanGrant()
     {
         return $this->enableAuthorization || $this->enableImplicit || $this->enableUserCredentials || $this->enableClientCredentials;
     }
-
 
     /**
      * Init all required storages
