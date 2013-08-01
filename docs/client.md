@@ -3,7 +3,9 @@ Client
 
 The client implementation also supports all main grant types.
 
-# Configuration of the Client Application Component
+# Configuration
+
+## Client Application Component
 
 Add the application component to your `main.php` and configure one or more OAuth2 providers.
 At the time being we only support OAuth2Yii servers - but we'll extend soon to support many
@@ -30,9 +32,11 @@ well known OAuth2 providers.
     ),
 ```
 
-# Grant Type "Resource Owner" - Authenticate by username/password
+# Usage
 
-As explained above this grant type should only be used if you trust your client.
+## Grant Type "Resource Owner" - Authenticate by username/password
+
+As explained before this grant type should only be used if you trust your client.
 In this case you'd ask your visitors for username and password and can then
 authenticate against the OAuth2 server.
 
@@ -57,7 +61,7 @@ You have to change 2 lines, that's all. Now the user's will be authenticated aga
 OAuth2 server and logged in on your site on success.
 
 
-# Grant Type "Client Credentials" - Authenticate by clientId/clientSecret
+## Grant Type "Client Credentials" - Authenticate by clientId/clientSecret
 
 If you want to authenticate yourself as a client to the OAuth2 server, it works basically
 the same as for the user. Again the main code is very simple:
@@ -71,7 +75,7 @@ if($identity->authenticate()) {
 }
 ```
 
-# Sending requests to the server
+## Sending requests to the server
 
 After authentication you eventually want to send requests to some protected resources
 on the server. You could build the requests manually if you want and retrieve the access

@@ -124,5 +124,5 @@ If a request with a valid access token comes in, you can also retrieve the user 
 this access token was stored for (unless you use grant type client credentials).
 
 ```php
-$id = Yii::app()->oauth2->userId;?
+$id = Yii::app()->oauth2->userId;
 ```
