@@ -2,6 +2,7 @@
 namespace OAuth2Yii\Storage;
 
 use \OAuth2\Storage\AccessTokenInterface;
+use \Yii;
 
 /**
  * Server storage for access tokens
