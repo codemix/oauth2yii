@@ -26,10 +26,10 @@ class UserIdentity extends Identity
 
         YII_DEBUG && Yii::trace("Requesting access token for user from $url", 'oauth2.accesstoken');
         $response   = $client->post($url, $data, array(), $provider->clientId, $provider->clientSecret);
-        $token      = AccessToken::parseResponse($response, $this);
+        $token      = AccessToken::parseResponse($response, $provider, $this);
 
         if($token===null) {
-            YII_DEBUG && Yii::trace('Access token request for user failed', 'oauth2.accesstoken');
+            YII_DEBUG && Yii::trace('Access token request for user failed: '.$response, 'oauth2.accesstoken');
             return false;
         } else {
             YII_DEBUG && Yii::trace("Received access token '{$token->token}' for user", 'oauth2.accesstoken');
