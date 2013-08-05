@@ -51,6 +51,22 @@ class AccessToken extends CComponent
     }
 
     /**
+     * @param string $scope single scope or a space separated list of scopes.
+     * @return bool whether this access token has all scopes
+     */
+    public function hasScope($scope)
+    {
+        if(!$this->scope) {
+            return false;
+        }
+
+        $required   = explode(' ',trim($scope));
+        $available  = explode(' ',$this->scope);
+
+        return count(array_diff($required, $available))==0;
+    }
+
+    /**
      * Try to refresh this access token
      *
      * @param string $id of the client/user
