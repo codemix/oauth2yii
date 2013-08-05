@@ -74,7 +74,7 @@ abstract class Provider extends CComponent
 
     /**
      * @param string|null $clientId a client id or null to load the current user's access token.
-     * @return string|null a valid access token or null if no token could be obtained.
+     * @return OAuth2Yii\Component|AccessToken|null a access token object or null if no valid token could be obtained.
      * If there is an expired token and a refresh code is available, it will try to refresh
      * the token. If that fails, again null is returned.
      */
@@ -91,7 +91,7 @@ abstract class Provider extends CComponent
         $token = $this->getStorage()->loadToken($id, $type, $this->name);
 
         if($token!==null && (!$token->getIsExpired() || $token->refresh($id, $this))) {
-            return $token->token;
+            return $token;
         }
     }
 
@@ -130,7 +130,7 @@ abstract class Provider extends CComponent
 
         YII_DEBUG && Yii::trace("Sending Guzzle request to {$request->getUrl()} with access token '$token'",'oauth2.provider.guzzle');
 
-        $request->addHeader('Authorization', 'Bearer '.$token);
+        $request->addHeader('Authorization', 'Bearer '.$token->token);
         return $request->send();
     }
 }
