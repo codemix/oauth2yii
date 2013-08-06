@@ -25,7 +25,12 @@ class ClientIdentity extends Identity
         $token      = AccessToken::parseResponse($response, $provider, $this);
 
         if($token===null) {
-            YII_DEBUG && Yii::trace('Access token request for client failed: '.$response, 'oauth2.accesstoken');
+            YII_DEBUG && Yii::trace(
+                sprintf("Received client access token: %s, scope: '%s', expires: %s",
+                    $token->token, $token->scope, date('Y-m-d H:i:s',$token->expires)
+                ),
+                'oauth2.accesstoken'
+            );
             return false;
         } else {
             YII_DEBUG && Yii::trace("Received access token '{$token->token}' for client", 'oauth2.accesstoken');
