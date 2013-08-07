@@ -36,7 +36,7 @@ class ClientIdentity extends Identity
             YII_DEBUG && Yii::trace("Received access token '{$token->token}' for client", 'oauth2.accesstoken');
             $this->errorCode = self::ERROR_NONE;
             $token->type = AccessToken::TYPE_CLIENT;
-            $provider->getStorage()->saveToken($token);
+            $provider->getStorage()->saveToken($token); // @FIXME - this is missing a parameter, but what should it be?
             return true;
         }
     }

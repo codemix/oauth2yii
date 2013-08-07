@@ -70,7 +70,7 @@ class AccessToken extends CComponent
      * Try to refresh this access token
      *
      * @param string $id of the client/user
-     * @param OAuth2Yii\Provider\Provider
+     * @param \OAuth2Yii\Provider\Provider $provider the auth provider
      * @return bool whether the token were successfully refreshed
      */
     public function refresh($id, $provider)
@@ -86,7 +86,7 @@ class AccessToken extends CComponent
 
             YII_DEBUG && Yii::trace("Refreshing {$this->type} access token '{$this->token}'", 'oauth2.accesstoken');
             $response   = $client->post($url, $data, array(), $provider->clientId, $provider->clientSecret);
-            $token      = self::parseResponse($response);
+            $token      = self::parseResponse($response, $provider);
 
             if($token===null) {
                 YII_DEBUG && Yii::trace('Access token refresh failed', 'oauth2.accesstoken');
@@ -103,9 +103,9 @@ class AccessToken extends CComponent
 
     /**
      * @param string $response from a token request
-     * @param OAuth2Yii\Provider\Provider
-     * @param CUserIdentity|null if provided, any error will be set on this identity
-     * @return null|OAuth2Yii\Component\AccessToken the access token object or null on failure
+     * @param \OAuth2Yii\Provider\Provider
+     * @param \CUserIdentity|null if provided, any error will be set on this identity
+     * @return null|\OAuth2Yii\Component\AccessToken the access token object or null on failure
      */
     public static function parseResponse($response, $provider, $identity=null)
     {
