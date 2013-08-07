@@ -19,8 +19,10 @@ abstract class CustomStorage extends Storage
     protected abstract function getInterface();
 
     /**
-     * @param \OAuth2Yii\Component\Server the server component
-     * @param string name of the custom storage class
+     * @param \OAuth2Yii\Component\ServerComponent $server the server component
+     * @param string $className name of the custom storage class
+     *
+     * @throws \CException if the specified class doesn't implement the correct interface
      */
     public function __construct(\OAuth2Yii\Component\ServerComponent $server, $className)
     {

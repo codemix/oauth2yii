@@ -37,7 +37,7 @@ class HttpClient extends CComponent
      * @param array $headers for the POST request as list of strings
      * @param string|null optional username for HTTP Auth
      * @param string|null optional password for HTTP Auth
-     * @return string|false the response body as string or `false` on error
+     * @return string|bool the response body as string or `false` on error
      */
     public function post($url, $data = array(), $headers = array(), $username = null, $password = null)
     {

@@ -9,6 +9,8 @@ namespace OAuth2Yii\Interfaces;
 interface User
 {
     /**
+     * @param string $username the user name
+     *
      * @return array|object|null must return a user representation for
      * the given username. This can be an arbitrary object or array
      * that will be passed back to other methods of this interface.

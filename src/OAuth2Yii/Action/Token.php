@@ -20,13 +20,19 @@ class Token extends CAction
      */
     public $oauth2Component = 'oauth2';
 
+    /**
+     * Runs the action.
+     *
+     *
+     * @throws \CException if oauth is improperly configured.
+     */
     public function run()
     {
         if(!Yii::app()->hasComponent($this->oauth2Component)) {
             throw new CException("Could not find OAuth2Yii/Server component '{$this->oauth2Component}'");
         }
 
-        $oauth2     = Yii::app()->getComponent($this->oauth2Component);
+        $oauth2     = Yii::app()->getComponent($this->oauth2Component); /* @var \OAuth2Yii\Component\ServerComponent $oauth2 */
         $server     = $oauth2->getServer();
 
         if(!$oauth2->getCanGrant()) {

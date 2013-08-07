@@ -35,7 +35,7 @@ class RefreshToken extends DbStorage implements RefreshTokenInterface
     }
 
     /**
-     * Required by OAuth2\Storage\RefreshTokenInterfaces
+     * Required by \OAuth2\Storage\RefreshTokenInterfaces
      *
      * @param mixed $token refresh token
      * @return array with keys refresh_token, client_id, user_id, expires and scope
@@ -66,7 +66,7 @@ class RefreshToken extends DbStorage implements RefreshTokenInterface
     }
 
     /**
-     * Required by OAuth2\Storage\RefreshTokenInterfaces
+     * Required by \OAuth2\Storage\RefreshTokenInterfaces
      *
      * @param mixed $token to be stored
      * @param mixed $client_id to be stored
@@ -109,7 +109,7 @@ class RefreshToken extends DbStorage implements RefreshTokenInterface
 
 
     /**
-     * Required by OAuth2\Storage\RefreshTokenInterfaces
+     * Required by \OAuth2\Storage\RefreshTokenInterfaces
      *
      * @param mixed $token to unset
      * @return bool whether token was removed
