@@ -51,6 +51,8 @@ class CustomClient extends CustomStorage implements ClientInterface, ClientCrede
      *
      * @param string $client_id
      * @param string $grant_type as defined by RFC 6749
+     *
+     * @return bool true if the grant type is supported by this client identifier
      */
     public function checkRestrictedGrantType($client_id, $grant_type)
     {

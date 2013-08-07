@@ -114,12 +114,12 @@ class ServerComponent extends CApplicationComponent
     public $scopes;
 
     /**
-     * @var string|null|false a string with default scope(s). If set to `null` no scope is required.
+     * @var string|null|bool a string with default scope(s). If set to `null` no scope is required.
      */
     public $defaultScope;
 
     /**
-     * @var OAuth2\Server
+     * @var \OAuth2\Server
      */
     protected $_server;
 
@@ -178,7 +178,7 @@ class ServerComponent extends CApplicationComponent
     }
 
     /**
-     * @return OAuth2\Server object
+     * @return \OAuth2\Server object
      */
     public function getServer()
     {
@@ -186,8 +186,12 @@ class ServerComponent extends CApplicationComponent
     }
 
     /**
-     * @param string $name
-     * @return void
+     * Gets the named storage
+     *
+     * @param string $name the storage name
+     *
+     * @throws \CException if the storage doesn't exist
+     * @return object the storage
      */
     public function getStorage($name)
     {
@@ -267,7 +271,11 @@ class ServerComponent extends CApplicationComponent
     }
 
     /**
+     * Creates a storage with the given name
+     *
      * @param string $name of the storage
+     *
+     * @throws \CException if the name is invalid
      * @return object the created storage
      */
     protected function createStorage($name)
@@ -305,6 +313,8 @@ class ServerComponent extends CApplicationComponent
             case self::CLASS_SCOPE:
                 $object = new Storage\Scope($this);
                 break;
+            default:
+                throw new \CException('Unknown storage class name');
         }
 
         $objects[$className] = $object;
