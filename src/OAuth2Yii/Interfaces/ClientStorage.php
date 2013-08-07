@@ -24,10 +24,10 @@ interface ClientStorage
      * as Yii::app()->user->id. So you should query for the Id of this username here and store
      * the token under this Id in your permanent storage.
      *
-     * @param string $id client Id or username for users
+     * @param string $username client Id or username for users
      * @param \OAuth2Yii\Component\AccessToken the token object to store
      */
-    public function saveToken($id, $accessToken);
+    public function saveToken($username, $accessToken);
 
     /**
      * @param string $id of the client/user. For a user this is usually Yii::app()->user->id.

@@ -23,10 +23,10 @@ class SessionClientStorage implements ClientStorage
     }
 
     /**
-     * @param string $id unique name of the user
+     * @param string $username unique name of the user
      * @param \OAuth2Yii\Component\AccessToken $accessToken the token object to store
      */
-    public function saveToken($id, $accessToken)
+    public function saveToken($username, $accessToken)
     {
         $key = $this->getKey($accessToken->provider, $accessToken->type);
         Yii::app()->session->add($key, $accessToken);

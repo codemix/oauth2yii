@@ -23,7 +23,7 @@ class Token extends CAction
     /**
      * Runs the action.
      *
-     * 
+     *
      * @throws \CException if oauth is improperly configured.
      */
     public function run()
