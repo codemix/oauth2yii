@@ -14,7 +14,9 @@ class Identity extends CUserIdentity
     protected $provider;
 
     /**
-     * @return OAuth2Yii\Provider\Provider for this identity
+     * Construct the identity.
+     *
+     * @param \OAuth2Yii\Component\Identity $provider provider for this identity
      * @param string $username
      * @param string $password
      */
@@ -25,7 +27,7 @@ class Identity extends CUserIdentity
     }
 
     /**
-     * @return OAuth2Yii\Provider\Provider for this identity
+     * @return \OAuth2Yii\Provider\Provider for this identity
      */
     public function getProvider()
     {

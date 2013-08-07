@@ -33,7 +33,7 @@ abstract class Provider extends CComponent
     public $storageClass;
 
     /**
-     * @var OAuth2Yii\Interfaces\TokenStorage
+     * @var \OAuth2Yii\Interfaces\ClientStorage
      */
     protected $_storage;
 
@@ -55,7 +55,7 @@ abstract class Provider extends CComponent
     }
 
     /**
-     * @return OAuth2Yii\Component\ClientIdentity a client identity to perform authentication
+     * @return \OAuth2Yii\Component\ClientIdentity a client identity to perform authentication
      */
     public function createClientIdentity()
     {
@@ -65,7 +65,7 @@ abstract class Provider extends CComponent
     /**
      * @param string $username to authenticate
      * @param string $password
-     * @return OAuth2Yii\Component\UserIdentity a user identity to perform authentication
+     * @return \OAuth2Yii\Component\UserIdentity a user identity to perform authentication
      */
     public function createUserIdentity($username, $password)
     {
@@ -74,7 +74,7 @@ abstract class Provider extends CComponent
 
     /**
      * @param string|null $clientId a client id or null to load the current user's access token.
-     * @return OAuth2Yii\Component|AccessToken|null a access token object or null if no valid token could be obtained.
+     * @return \OAuth2Yii\Component\AccessToken|null a access token object or null if no valid token could be obtained.
      * If there is an expired token and a refresh code is available, it will try to refresh
      * the token. If that fails, again null is returned.
      */
@@ -96,7 +96,7 @@ abstract class Provider extends CComponent
     }
 
     /**
-     * @var OAuth2Yii\Interfaces\ClientTokenStorage the client storage class for this provider
+     * @return \OAuth2Yii\Interfaces\ClientStorage the client storage class for this provider
      */
     public function getStorage()
     {
@@ -115,9 +115,9 @@ abstract class Provider extends CComponent
      * It will add the neccessary access token to the request and then send the request. If no
      * access token is available, it will return false.
      *
-     * @param Guzzle\Http\Message\Request $request a Guzzle request object
+     * @param \Guzzle\Http\Message\Request $request a Guzzle request object
      * @param string|null $clientId a client id or null to load the current user's access token.
-     * @return Guzzle\Http\Message\Response|false a response object or false if no valid access token found
+     * @return \Guzzle\Http\Message\Response|bool a response object or false if no valid access token found
      */
     public function sendGuzzleRequest($request,$clientId = null)
     {

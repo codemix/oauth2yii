@@ -24,9 +24,9 @@ class SessionClientStorage implements ClientStorage
 
     /**
      * @param string $username unique name of the user
-     * @param OAuth2Yii\Component\AccessToken the token object to store
+     * @param \OAuth2Yii\Component\AccessToken $accessToken the token object to store
      */
-    public function saveToken($id, $accessToken)
+    public function saveToken($username, $accessToken)
     {
         $key = $this->getKey($accessToken->provider, $accessToken->type);
         Yii::app()->session->add($key, $accessToken);
@@ -34,9 +34,9 @@ class SessionClientStorage implements ClientStorage
 
     /**
      * @param string $id of the client/user. For a user this is usually Yii::app()->user->id.
-     * @param string type of token. One of AccessToken::TYPE_(CLIENT|USER).
+     * @param string $type type of token. One of AccessToken::TYPE_(CLIENT|USER).
      * @param string $provider name of provider
-     * @return null|OAuth2Yii\Component\AccessToken the access token stored for this client/user or null if not found
+     * @return null|\OAuth2Yii\Component\AccessToken the access token stored for this client/user or null if not found
      */
     public function loadToken($id,$type,$provider)
     {
@@ -46,8 +46,8 @@ class SessionClientStorage implements ClientStorage
 
     /**
      * @param string $id of the client/user. For a user this is usually Yii::app()->user->id.
-     * @param string type of token. One of AccessToken::TYPE_(CLIENT|USER).
-     * @param OAuth2Yii\Component\AccessToken the new token object to store instead
+     * @param string $type type of token. One of AccessToken::TYPE_(CLIENT|USER).
+     * @param \OAuth2Yii\Component\AccessToken the new token object to store instead
      */
     public function updateToken($id, $type, $accessToken)
     {
@@ -57,12 +57,12 @@ class SessionClientStorage implements ClientStorage
 
     /**
      * @param string $id of the client/user. For a user this is usually Yii::app()->user->id.
-     * @param string type of token. One of AccessToken::TYPE_(CLIENT|USER).
+     * @param string $type type of token. One of AccessToken::TYPE_(CLIENT|USER).
      * @param string $provider name of provider
      */
     public function deleteToken($id, $type, $provider)
     {
-        $key = $this->getKey($accessToken->provider, $type);
+        $key = $this->getKey($provider, $type);
         Yii::app()->session->remove($key);
     }
 }

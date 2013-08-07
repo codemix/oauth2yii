@@ -44,7 +44,7 @@ class ClientComponent extends CApplicationComponent
 
     /**
      * @param string $name provider name as configured in $providers
-     * @return OAuth2\Provider\Provider
+     * @return \OAuth2Yii\Provider\Provider
      */
     public function getProvider($name)
     {
@@ -59,12 +59,14 @@ class ClientComponent extends CApplicationComponent
      * Create and init an OAuth2 provider
      *
      * @param string $name of provider
-     * @return OAuth2\Provider\Provider
+     *
+     * @throws \CException if the configuration is missing
+     * @return \OAuth2Yii\Provider\Provider
      */
     protected function createProvider($name)
     {
         if(!isset($this->providers[$name])) {
-            throw new CExcpetion("Missing configuration for provider '$name'");
+            throw new \CException("Missing configuration for provider '$name'");
         }
 
         $config = $this->providers[$name];
