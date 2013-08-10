@@ -12,6 +12,11 @@ use \Yii;
 class AccessToken extends DbStorage implements AccessTokenInterface
 {
     /**
+     * @var array list of access tokens
+     */
+    protected $_tokens = array();
+
+    /**
      * @return string name of the DB table
      */
     protected function getTableName()
@@ -42,7 +47,10 @@ class AccessToken extends DbStorage implements AccessTokenInterface
      */
     public function getAccessToken($token)
     {
-        YII_DEBUG && Yii::trace("Searching for access token $token",'oauth2.storage.accesstoken');
+        if(isset($this->_tokens[$token])) {
+            return $this->_tokens[$token];
+        }
+        YII_DEBUG && Yii::trace("Querying access token $token",'oauth2.storage.accesstoken');
 
         $sql = sprintf(
             'SELECT client_id,user_id,expires,scope FROM %s WHERE access_token=:token',
@@ -56,7 +64,7 @@ class AccessToken extends DbStorage implements AccessTokenInterface
         }
 
         YII_DEBUG && Yii::trace(
-            sprintf("Access token '%s' found. client_id: %s, user_id: %s, expires: %s, scope: %s",
+            sprintf("Access token found: %s, client_id: %s, user_id: %s, expires: %s, scope: %s",
                 $token,
                 $result['client_id'],
                 $result['user_id'],
@@ -67,6 +75,8 @@ class AccessToken extends DbStorage implements AccessTokenInterface
         );
 
         $result['expires'] = strtotime($result['expires']);
+
+        $this->_tokens[$token] = $result;
 
         return $result;
     }
