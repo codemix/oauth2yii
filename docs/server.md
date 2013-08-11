@@ -43,11 +43,14 @@ a custom `WebUser` component:
         'class' => 'OAuth2Yii\Component\WebUser',
 ```
 
+If you used a different name than `oauth2` for your server component, you can configure it
+in the `oauth2` property of `WebUser`.
+
 ## `token` action
 
 This action is required by all grant types. It's available as an
 [action class](http://www.yiiframework.com/doc/guide/1.1/en/basics.controller#action) that you
-can configure in any controller you want. We recommend to create an `OAuthController` and
+can configure in any controller you want. We recommend creating an `OAuthController` and
 import the action as follows.
 
 ```php
