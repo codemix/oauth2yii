@@ -1,7 +1,7 @@
 Installation
 ============
 
-We recommend to install the extension with [composer](http://getcomposer.org/). Add this to
+We recommend installing the extension with [composer](http://getcomposer.org/). Add this to
 the `require` section of your `composer.json`:
 
     'codemix/oauth2yii' : 'dev-master'

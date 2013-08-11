@@ -8,6 +8,7 @@ use \OAuth2Yii\Component\AccessToken;
 
 use \Yii;
 use \CComponent;
+use \CException;
 
 abstract class Provider extends CComponent
 {
@@ -73,21 +74,25 @@ abstract class Provider extends CComponent
     }
 
     /**
-     * @param string|null $clientId a client id or null to load the current user's access token.
+     * @param string|null $id of the client or user or null to load the current user's access token.
+     * @param bool whether the id is for a client. Default is `false`, which means, it's a user id.
      * @return \OAuth2Yii\Component\AccessToken|null a access token object or null if no valid token could be obtained.
      * If there is an expired token and a refresh code is available, it will try to refresh
      * the token. If that fails, again null is returned.
      */
-    public function getAccessToken($clientId = null)
+    public function getAccessToken($id = null, $isClient=false)
     {
-        if($clientId===null) {
-            $id = Yii::app()->user->id;
-            $type = AccessToken::TYPE_USER;
-        } else {
-            $id = $clientId;
-            $type = AccessToken::TYPE_CLIENT;
+        if($id===null) {
+            if($isClient) {
+                throw new CException('No client id supplied');
+            } else {
+                $id = Yii::app()->user->id;
+            }
+            if($id===null) {
+                return null;
+            }
         }
-
+        $type = $isClient ? AccessToken::TYPE_CLIENT : AccessToken::TYPE_USER;
         $token = $this->getStorage()->loadToken($id, $type, $this->name);
 
         if($token!==null && (!$token->getIsExpired() || $token->refresh($id, $this))) {
@@ -115,13 +120,13 @@ abstract class Provider extends CComponent
      * It will add the neccessary access token to the request and then send the request. If no
      * access token is available, it will return false.
      *
-     * @param \Guzzle\Http\Message\Request $request a Guzzle request object
-     * @param string|null $clientId a client id or null to load the current user's access token.
+     * @param string|null $id of the client or user or null to load the current user's access token.
+     * @param bool whether the id is for a client. Default is `false`, which means, it's a user id.
      * @return \Guzzle\Http\Message\Response|bool a response object or false if no valid access token found
      */
-    public function sendGuzzleRequest($request,$clientId = null)
+    public function sendGuzzleRequest($request,$id = null, $isClient = false)
     {
-        $token = $this->getAccessToken($clientId);
+        $token = $this->getAccessToken($id, $isClient);
 
         if($token===null) {
             YII_DEBUG && Yii::trace("Could not send Guzzle request: No token available",'oauth2.provider.guzzle');

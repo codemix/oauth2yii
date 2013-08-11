@@ -31,12 +31,26 @@ Depending on your grant types you also need to provide one or two actions:
  * User credentials: `token`
  * Client credentials: `token`
 
+## WebUser Component
+
+In order for `Yii::app()->user->isGuest` and `Yii::app()->user->id` to work, you can configure
+a custom `WebUser` component:
+
+
+```php
+'components' => array(
+    'user' => array(
+        'class' => 'OAuth2Yii\Component\WebUser',
+```
+
+If you used a different name than `oauth2` for your server component, you can configure it
+in the `oauth2` property of `WebUser`.
 
 ## `token` action
 
 This action is required by all grant types. It's available as an
 [action class](http://www.yiiframework.com/doc/guide/1.1/en/basics.controller#action) that you
-can configure in any controller you want. We recommend to create an `OAuthController` and
+can configure in any controller you want. We recommend creating an `OAuthController` and
 import the action as follows.
 
 ```php
