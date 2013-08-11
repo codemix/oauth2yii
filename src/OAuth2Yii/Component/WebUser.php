@@ -15,9 +15,6 @@ use \CHttpCookie;
  */
 class WebUser extends CWebUser
 {
-    // Name of cookie that indicates users that logged in locally
-    const LOCAL_COOKIE = 'local';
-
     /**
      * @var bool whether to allow local logins on the server. If users logged in locally, an access
      * token will be stored for them in the session and injected into all requests. This way you can
@@ -41,6 +38,11 @@ class WebUser extends CWebUser
     public $loginProvider;
 
     /**
+     * @var string name of the cookie that identifies users that logged in locally.
+     */
+    public $localLoginCookie = 'oauth2local';
+
+    /**
      * @var CActiveRecord the user record of the currently logged in user
      */
     protected $_model = false;
@@ -57,7 +59,7 @@ class WebUser extends CWebUser
             throw new \CException("Invalid OAuth2Yii server component '{$this->oauth2}'");
         }
 
-        if($this->allowLocalLogin && $app->request->cookies->itemAt(self::LOCAL_COOKIE)!==null) {
+        if($this->allowLocalLogin && $app->request->cookies->itemAt($this->localLoginCookie)!==null) {
             $id = parent::getId();
 
             if($id!==null) {
@@ -90,10 +92,10 @@ class WebUser extends CWebUser
     {
         if($this->allowLocalLogin) {
             $cookies = Yii::app()->request->cookies;
-            if($cookies->itemAt(self::LOCAL_COOKIE)===null) {
-                $cookie = new CHttpCookie(self::LOCAL_COOKIE,1);
+            if($cookies->itemAt($this->localLoginCookie)===null) {
+                $cookie = new CHttpCookie($this->localLoginCookie,1);
                 $cookie->expire = time() + 3600 * 24 * 10;
-                $cookies->add(self::LOCAL_COOKIE, $cookie);
+                $cookies->add($this->localLoginCookie, $cookie);
             }
         }
     }
@@ -104,7 +106,7 @@ class WebUser extends CWebUser
     protected function afterLogout()
     {
         if($this->allowLocalLogin) {
-            Yii::app()->request->cookies->remove(self::LOCAL_COOKIE);
+            Yii::app()->request->cookies->remove($this->localLoginCookie);
         }
     }
 
