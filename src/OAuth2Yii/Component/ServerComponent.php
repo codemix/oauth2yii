@@ -129,6 +129,11 @@ class ServerComponent extends CApplicationComponent
     protected $_storages = array();
 
     /**
+     * @var array of access token data
+     */
+    protected $_tokenData;
+
+    /**
      * @var array our storage classes indexed by oauth2-php-server storage names
      */
     protected $_storageMap = array(
@@ -214,10 +219,29 @@ class ServerComponent extends CApplicationComponent
      */
     public function getUserId()
     {
-        $request = \OAuth2\Request::createFromGlobals();
-        $tokenData = $this->_server->getAccessTokenData($request);
-
+        $tokenData = $this->getAccessTokenData();
         return isset($tokenData['user_id']) ? $tokenData['user_id'] : null;
+    }
+
+    /**
+     * @return mixed|null the client id if a valid access token was supplied in the request or null otherwhise
+     */
+    public function getClientId()
+    {
+        $tokenData = $this->getAccessTokenData();
+        return isset($tokenData['client_id']) ? $tokenData['client_id'] : null;
+    }
+
+    /**
+     * @return array access token data
+     */
+    public function getAccessTokenData()
+    {
+        if($this->_tokenData===null) {
+            $request = \OAuth2\Request::createFromGlobals();
+            $this->_tokenData = $this->_server->getAccessTokenData($request);
+        }
+        return $this->_tokenData;
     }
 
     /**
