@@ -28,10 +28,12 @@ abstract class Provider extends CComponent
     public $clientSecret;
 
     /**
-     * @var string|null name of a custom token storage class for access/refresh tokens or null for
-     * built in session based storage. The storage class must implement OAuth2Yii\Interfaces\ClientStorage.
+     * @var string name of a storage class for access/refresh tokens that implements
+     * OAuth2Yii\Interfaces\ClientStorage. Default is `OAuth2Yii\Storage\SessionClientStorage`
+     * which stores tokens in the user session. For grant type client_credentials the
+     * `OAuth2Yii\Storage\GlobalStateClientStorage` may be more apropriate.
      */
-    public $storageClass;
+    public $storageClass = 'OAuth2Yii\Storage\SessionClientStorage';
 
     /**
      * @var \OAuth2Yii\Interfaces\ClientStorage
@@ -74,25 +76,24 @@ abstract class Provider extends CComponent
     }
 
     /**
-     * @param string|null $id of the client or user or null to load the current user's access token.
-     * @param bool whether the id is for a client. Default is `false`, which means, it's a user id.
+     * @param string|null|boolean $id of the user or null to use the current user id (default). If `true`
+     * the access token for grant type `client_credentials` is returned.
      * @return \OAuth2Yii\Component\AccessToken|null a access token object or null if no valid token could be obtained.
      * If there is an expired token and a refresh code is available, it will try to refresh
-     * the token. If that fails, again null is returned.
+     * the token. If that fails, null is returned.
      */
-    public function getAccessToken($id = null, $isClient=false)
+    public function getAccessToken($id = null)
     {
+        $type = $id===true ? AccessToken::TYPE_CLIENT : AccessToken::TYPE_USER;
         if($id===null) {
-            if($isClient) {
-                throw new CException('No client id supplied');
-            } else {
-                $id = Yii::app()->user->id;
-            }
+            $id = Yii::app()->user->id;
             if($id===null) {
                 return null;
             }
+        } elseif($id===true) {
+            $id = $this->clientId;
         }
-        $type = $isClient ? AccessToken::TYPE_CLIENT : AccessToken::TYPE_USER;
+
         $token = $this->getStorage()->loadToken($id, $type, $this->name);
 
         if($token!==null && (!$token->getIsExpired() || $token->refresh($id, $this))) {
@@ -106,11 +107,7 @@ abstract class Provider extends CComponent
     public function getStorage()
     {
         if($this->_storage===null) {
-            if($this->storageClass===null) {
-                $this->_storage = new Storage\SessionClientStorage();
-            } else {
-                $this->_storage = new $this->storageClass;
-            }
+            $this->_storage = Yii::createComponent(array('class' => $this->storageClass));
         }
         return $this->_storage;
     }
@@ -120,13 +117,14 @@ abstract class Provider extends CComponent
      * It will add the neccessary access token to the request and then send the request. If no
      * access token is available, it will return false.
      *
-     * @param string|null $id of the client or user or null to load the current user's access token.
+     * @param string|null|boolean $id of the user or null to use the current user id (default). If `true`
+     * the access token for grant type `client_credentials` is used.
      * @param bool whether the id is for a client. Default is `false`, which means, it's a user id.
      * @return \Guzzle\Http\Message\Response|bool a response object or false if no valid access token found
      */
-    public function sendGuzzleRequest($request,$id = null, $isClient = false)
+    public function sendGuzzleRequest($request,$id = null)
     {
-        $token = $this->getAccessToken($id, $isClient);
+        $token = $this->getAccessToken($id);
 
         if($token===null) {
             YII_DEBUG && Yii::trace("Could not send Guzzle request: No token available",'oauth2.provider.guzzle');

@@ -40,6 +40,9 @@ As explained before this grant type should only be used if you trust your client
 In this case you'd ask your visitors for username and password and can then
 authenticate against the OAuth2 server.
 
+> **Note:** On the server, the client needs to have `password` in the list of
+> `grantTypes` in the `oauth2_clients` table.
+
 Here is an example how you would integrate OAuth2 authentication with the default
 `LoginForm` that is created by `yiic webapp`.
 
@@ -64,7 +67,10 @@ OAuth2 server and logged in on your site on success.
 ## Grant Type "Client Credentials" - Authenticate by clientId/clientSecret
 
 If you want to authenticate yourself as a client to the OAuth2 server, it works basically
-the same as for the user. Again the main code is very simple:
+the same as for the user.
+
+> **Note:** On the server, the client needs to have `client_credentials` in the list of
+> `grantTypes` in the `oauth2_clients` table.
 
 ```php
 $provider = Yii::app()->oauth2client->getProvider('myoauth');
@@ -73,6 +79,20 @@ $identity = $provider->createClientIdentity();
 if($identity->authenticate()) {
     // Client authentication was successful.
 }
+```
+
+For this grant type it's very likely, that you want to share the same access token
+throughout the application (in contrast to storing a new access token for every user).
+Therefore you can use the `GlobalStateClientStorage` class:
+
+```php
+'components' => array(
+    'oauth2client' => array(
+        'class'                     => 'OAuth2Yii\Component\ClientComponent',
+        'providers' => array(
+            'myoauth' => array(
+                'class'         => 'OAuth2Yii\Provider\Generic',
+                'storageClass'  => 'OAuth2Yii\Storage\GlobalStateClientStorage'
 ```
 
 ## Sending requests to the server
