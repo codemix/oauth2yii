@@ -58,7 +58,7 @@ class User extends DbStorage implements UserCredentialsInterface
     public function getUserDetails($username)
     {
         $sql = sprintf(
-            'SELECT username as user_id FROM %s WHERE username=:username',
+            'SELECT username as user_id, scope FROM %s WHERE username=:username',
             $this->getTableName()
         );
         return $this->getDb()->createCommand($sql)->queryRow(true, array(':username'=>$username));
