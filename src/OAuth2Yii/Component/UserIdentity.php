@@ -24,6 +24,10 @@ class UserIdentity extends Identity
             'password'      => $this->password,
         );
 
+        if($this->scope) {
+            $data['scope'] = $this->scope;
+        }
+
         YII_DEBUG && Yii::trace("Requesting access token for user from $url", 'oauth2.accesstoken');
         $response   = $client->post($url, $data, array(), $provider->clientId, $provider->clientSecret);
         $token      = AccessToken::parseResponse($response, $provider, $this);
