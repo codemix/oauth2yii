@@ -20,6 +20,10 @@ class ClientIdentity extends Identity
         $url        = $provider->getTokenUrl();
         $data       = array('grant_type' => 'client_credentials');
 
+        if($this->scope) {
+            $data['scope'] = $this->scope;
+        }
+
         YII_DEBUG && Yii::trace("Requesting access token for client from $url", 'oauth2.accesstoken');
         $response   = $client->post($url, $data, array(), $this->username, $this->password);
         $token      = AccessToken::parseResponse($response, $provider, $this);

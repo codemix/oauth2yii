@@ -129,7 +129,7 @@ class AccessToken extends CComponent
             'provider'      => $provider->name,
             'token'         => $data['access_token'],
             'expires'       => time() + $data['expires_in'],
-            'refreshToken'  => $data['refresh_token'],
+            'refreshToken'  => isset($data['refresh_token']) ? $data['refresh_token'] : null,
             'scope'         => $data['scope'],
         );
 
