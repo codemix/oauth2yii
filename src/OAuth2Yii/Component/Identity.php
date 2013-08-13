@@ -11,6 +11,11 @@ use \CUserIdentity;
  */
 class Identity extends CUserIdentity
 {
+    /**
+     * @var string|null the optional space separated list of scopes that should be requested
+     */
+    public $scope;
+
     protected $provider;
 
     /**

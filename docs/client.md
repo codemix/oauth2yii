@@ -54,6 +54,9 @@ public function authenticate($attribute,$params)
         $provider = Yii::app()->oauth2client->getProvider('myoauth');
         $this->_identity = $provider->createUserIdentity($this->username,$this->password);
 
+        // Optional: Set scopes that you want assigned to the access token
+        $identity->scope = 'profile photos';
+
         if(!$this->_identity->authenticate())
             $this->addError('password','Incorrect username or password.');
     }
@@ -75,6 +78,9 @@ the same as for the user.
 ```php
 $provider = Yii::app()->oauth2client->getProvider('myoauth');
 $identity = $provider->createClientIdentity();
+
+// Optional: Set scopes that you want assigned to the access token
+$identity->scope = 'profile photos';
 
 if($identity->authenticate()) {
     // Client authentication was successful.
