@@ -11,6 +11,9 @@ use \Yii;
  */
 class AccessToken extends DbStorage implements AccessTokenInterface
 {
+    // Probability to perform garbage collection (percentage in int)
+    const GC_PROBABILITY = 1;
+
     /**
      * @var array list of access tokens
      */
@@ -29,7 +32,7 @@ class AccessToken extends DbStorage implements AccessTokenInterface
      */
     protected function createTable()
     {
-        YII_DEBUG && Yii::trace("Creating access token table '{$this->getTableName()}'", 'oauth.storage.accesstoken');
+        YII_DEBUG && Yii::trace("Creating access token table '{$this->getTableName()}'", 'oauth2.storage.accesstoken');
         $this->getDb()->createCommand()->createTable($this->getTableName(), array(
             'access_token'  => 'string NOT NULL PRIMARY KEY',
             'client_id'     => 'string NOT NULL',
@@ -93,6 +96,10 @@ class AccessToken extends DbStorage implements AccessTokenInterface
      */
     public function setAccessToken($token, $client_id, $user_id, $expires, $scope = null)
     {
+        if(mt_rand(0,100) < self::GC_PROBABILITY) {
+            $this->removeExpired();
+        }
+
         $values = array(
             'client_id'     => $client_id,
             'user_id'       => $user_id,
@@ -121,5 +128,14 @@ class AccessToken extends DbStorage implements AccessTokenInterface
                 ':token' => $token,
             ));
         }
+    }
+
+    /**
+     * Remove expired access tokens
+     */
+    protected function removeExpired()
+    {
+        YII_DEBUG && Yii::trace("Removing expired access tokens",'oauth2.storage.accesstoken');
+        $this->getDb()->createCommand()->delete($this->getTableName(), 'expires < NOW()');
     }
 }
