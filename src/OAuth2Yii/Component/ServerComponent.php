@@ -169,14 +169,14 @@ class ServerComponent extends CApplicationComponent
         $request    = \OAuth2\Request::createFromGlobals();
         $response   = new \OAuth2\Response;
 
-        YII_DEBUG && Yii::trace('Checking permission'.($scope ? " for scope '$scope'": ''),'oauth2.checkaccess');
+        YII_DEBUG && Yii::trace('Checking permission'.($scope ? " for scope '$scope'": ''),'oauth2.servercomponent');
 
         $value = $this->getServer()->verifyResourceRequest($request, $response, $scope);
 
         if(YII_DEBUG) {
             $p = $response->getParameters();
             $error = isset($p['error_description']) ? $p['error_description'] : 'Unknown error';
-            Yii::trace($value ? 'Permission granted' : "Check failed: $error",'oauth2.checkaccess');
+            Yii::trace($value ? 'Permission granted' : "Check failed: $error",'oauth2.servercomponent');
         }
 
         return $value;

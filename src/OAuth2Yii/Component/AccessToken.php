@@ -84,16 +84,16 @@ class AccessToken extends CComponent
                 'refresh_token' => $this->refreshToken,
             );
 
-            YII_DEBUG && Yii::trace("Refreshing {$this->type} access token '{$this->token}'", 'oauth2.accesstoken');
+            YII_DEBUG && Yii::trace("Refreshing {$this->type} access token '{$this->token}'", 'oauth2.component.accesstoken');
             $response   = $client->post($url, $data, array(), $provider->clientId, $provider->clientSecret);
             $token      = self::parseResponse($response, $provider);
 
             if($token===null) {
-                YII_DEBUG && Yii::trace('Access token refresh failed', 'oauth2.accesstoken');
+                YII_DEBUG && Yii::trace('Access token refresh failed', 'oauth2.component.accesstoken');
                 $storage->deleteToken($id, $this->type, $provider->name);
                 return false;
             } else {
-                YII_DEBUG && Yii::trace('Access token refresh successful', 'oauth2.accesstoken');
+                YII_DEBUG && Yii::trace('Access token refresh successful', 'oauth2.component.accesstoken');
                 $storage->updateToken($id, $this->type, $provider->name);
                 return true;
             }

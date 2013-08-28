@@ -127,11 +127,11 @@ abstract class Provider extends CComponent
         $token = $this->getAccessToken($id);
 
         if($token===null) {
-            YII_DEBUG && Yii::trace("Could not send Guzzle request: No token available",'oauth2.provider.guzzle');
+            YII_DEBUG && Yii::trace("Could not send Guzzle request: No token available",'oauth2.provider.provider');
             return false;
         }
 
-        YII_DEBUG && Yii::trace("Sending Guzzle request to {$request->getUrl()} with access token '$token'",'oauth2.provider.guzzle');
+        YII_DEBUG && Yii::trace("Sending Guzzle request to {$request->getUrl()} with access token '$token'",'oauth2.provider.provider');
 
         $request->addHeader('Authorization', 'Bearer '.$token->token);
         return $request->send();

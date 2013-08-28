@@ -111,7 +111,7 @@ class WebUser extends CWebUser
     }
 
     /**
-     * @return bool whether the has not supplied a valid access token and thus is seen as a guest
+     * @return bool whether the user has not supplied a valid access token and thus is seen as a guest
      */
     public function getIsGuest()
     {
