@@ -62,7 +62,7 @@ class Token extends CAction
                 $r->enabled=false;
             }
         }
-        YII_DEBUG && Yii::trace('Handling access token/authorization code request','oauth2.token');
+        YII_DEBUG && Yii::trace('Handling access token/authorization code request','oauth2.action.token');
         $request = Request::createFromGlobals();
         $server->handleTokenRequest($request)->send();
     }

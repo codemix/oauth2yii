@@ -11,6 +11,9 @@ use \Yii;
  */
 class RefreshToken extends DbStorage implements RefreshTokenInterface
 {
+    // Probability to perform garbage collection (percentage in int)
+    const GC_PROBABILITY = 100;
+
     /**
      * @return string name of the DB table
      */
@@ -77,6 +80,10 @@ class RefreshToken extends DbStorage implements RefreshTokenInterface
      */
     public function setRefreshToken($token, $client_id, $user_id, $expires, $scope = null)
     {
+        if(mt_rand(0,100) < self::GC_PROBABILITY) {
+            $this->removeExpired();
+        }
+
         $values = array(
             'client_id'     => $client_id,
             'user_id'       => $user_id,
@@ -120,5 +127,13 @@ class RefreshToken extends DbStorage implements RefreshTokenInterface
         return $this->getDb()->createCommand()->delete($this->getTableName(), 'refresh_token=:token', array(
             ':token' => $token,
         ));
+    }
+
+    /**
+     * Remove expired refresh tokens
+     */
+    protected function removeExpired()
+    {
+        $this->getDb()->createCommand()->delete($this->getTableName(), 'expires < NOW()');
     }
 }
