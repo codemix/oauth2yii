@@ -140,3 +140,12 @@ this access token was stored for (unless you use grant type client credentials).
 ```php
 $id = Yii::app()->oauth2->userId;
 ```
+
+If you configured the `WebUser` class, the user id will be available as usual as
+
+```php
+Yii::app()->user->id;
+```
+
+This could either be a user's or a client's id, depending on the OAuth2 grant type used.
+To find out, you can call `Yii::app()->user->isOAuth2User` and `Yii::app()->user->isOAuth2Client`.
