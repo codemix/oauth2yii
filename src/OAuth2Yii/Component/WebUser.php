@@ -34,9 +34,9 @@ class WebUser extends CWebUser
     protected $_isOAuth2Client = false;
 
     /**
-     * If an "Authorization" HTTP header is present, it will return, whether a valid access
-     * token was supplied in that header and return null if not. If no such header is sent,
-     * it will fall back to the parent implemenation of CWebUser::getId().
+     * For OAuth2 authenticated requests, it will return the ID of the OAuth2 user or client
+     * or null, if the access token was not valid. For standard requests it will fall back
+     * to the parent implementation of CWebUser::getId().
      *
      * @return int|null the user id if a valid access token was supplied or the user used PHP
      * session based login. Null is returned for guest users.
@@ -49,7 +49,7 @@ class WebUser extends CWebUser
             throw new \CException("Invalid OAuth2Yii server component '{$this->oauth2}'");
         }
 
-        if($oauth2->getRequest()->headers('AUTHORIZATION')) {
+        if($this->getIsOAuth2Request()) {
             if(($id = $oauth2->getUserId())!==null) {
                 $this->_isOAuth2User = true;
             } elseif(($id = $oauth2->getClientId())!==null) {
@@ -68,6 +68,26 @@ class WebUser extends CWebUser
     public function getIsGuest()
     {
         return $this->getId()===null;
+    }
+
+    /**
+     * @return bool whether the current request contains an OAuth2 access token. This is the case
+     * if an "Authorization: Bearer ..." header is found.
+     */
+    public function getIsOAuth2Request()
+    {
+        if(isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            $authorization = $_SERVER['HTTP_AUTHORIZATION'];
+        } else if(isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+            $authorization = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+        } elseif(function_exists('apache_request_headers')) {
+            $headers = apache_request_headers();
+            $authorization = isset($headers['Authorization']) ? $headers['Authorization'] : '';
+        } else {
+            return false;
+        }
+
+        return substr($authorization,0,6)==='Bearer';
     }
 
     /**
