@@ -124,6 +124,11 @@ class ServerComponent extends CApplicationComponent
     protected $_server;
 
     /**
+     * @var \OAuth2\Request
+     */
+    protected $_request;
+
+    /**
      * @var array of storages for oauth2-php-server
      */
     protected $_storages = array();
@@ -166,12 +171,11 @@ class ServerComponent extends CApplicationComponent
      */
     public function checkAccess($scope=null)
     {
-        $request    = \OAuth2\Request::createFromGlobals();
-        $response   = new \OAuth2\Response;
+        $response = new \OAuth2\Response;
 
         YII_DEBUG && Yii::trace('Checking permission'.($scope ? " for scope '$scope'": ''),'oauth2.servercomponent');
 
-        $value = $this->getServer()->verifyResourceRequest($request, $response, $scope);
+        $value = $this->getServer()->verifyResourceRequest($this->getRequest(), $response, $scope);
 
         if(YII_DEBUG) {
             $p = $response->getParameters();
@@ -238,8 +242,7 @@ class ServerComponent extends CApplicationComponent
     public function getAccessTokenData()
     {
         if($this->_tokenData===null) {
-            $request = \OAuth2\Request::createFromGlobals();
-            $this->_tokenData = $this->_server->getAccessTokenData($request);
+            $this->_tokenData = $this->_server->getAccessTokenData($this->getRequest());
         }
         return $this->_tokenData;
     }
@@ -251,6 +254,18 @@ class ServerComponent extends CApplicationComponent
     {
         return $this->enableAuthorization || $this->enableImplicit || $this->enableUserCredentials || $this->enableClientCredentials;
     }
+
+    /**
+     * @return \OAuth2\Request the request object as used by OAuth2-PHP
+     */
+    public function getRequest()
+    {
+        if($this->_request===null) {
+            $this->_request = \OAuth2\Request::createFromGlobals();
+        }
+        return $this->_request;
+    }
+
 
     /**
      * Init all required storages
