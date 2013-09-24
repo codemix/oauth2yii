@@ -34,14 +34,9 @@ class WebUser extends CWebUser
     protected $_isOAuth2Client = false;
 
     /**
-     * For OAuth2 authenticated requests, it will return the ID of the OAuth2 user or client
-     * or null, if the access token was not valid. For standard requests it will fall back
-     * to the parent implementation of CWebUser::getId().
-     *
-     * @return int|null the user id if a valid access token was supplied or the user used PHP
-     * session based login. Null is returned for guest users.
+     * Treat the user as logged in user if a valid OAuth2 token is supplied
      */
-    public function getId()
+    public function init()
     {
         $oauth2 = Yii::app()->getComponent($this->oauth2);
 
@@ -52,22 +47,13 @@ class WebUser extends CWebUser
         if($this->getIsOAuth2Request()) {
             if(($id = $oauth2->getUserId())!==null) {
                 $this->_isOAuth2User = true;
+                $this->changeIdentity($id, 'oauth2user', array());
             } elseif(($id = $oauth2->getClientId())!==null) {
                 $this->_isOAuth2Client = true;
+                $this->changeIdentity($id, 'oauth2client', array());
             }
-
-            return $id;
-        } else {
-            return parent::getId();
         }
-    }
-
-    /**
-     * @return bool whether the user has not supplied a valid access token and thus is seen as a guest
-     */
-    public function getIsGuest()
-    {
-        return $this->getId()===null;
+        parent::init();
     }
 
     /**
