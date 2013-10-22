@@ -98,7 +98,7 @@ class ServerComponent extends CApplicationComponent
 
     /**
      * @var string|null the name of the client class that implements OAuth2Yii\Interfaces\Client.
-     * If null an client table will be auto created.
+     * If null a client table will be auto created.
      */
     public $clientClass;
 
@@ -343,7 +343,7 @@ class ServerComponent extends CApplicationComponent
                 }
                 break;
             case self::CLASS_USER:
-                if($this->clientClass) {
+                if($this->userClass) {
                     $object = new Storage\CustomUser($this, $this->userClass);
                 } else {
                     $object = new Storage\User($this, $this->db);
