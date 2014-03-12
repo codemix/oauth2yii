@@ -67,7 +67,7 @@ class RefreshToken extends DbStorage implements RefreshTokenInterface
 
         $result['expires'] = strtotime($result['expires']);
         
-        return $results;
+        return $result;
     }
 
     /**
